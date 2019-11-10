@@ -1,0 +1,2 @@
+Blazor doesn't support Standard 2.1 as of Nov 9. 
+https://github.com/aspnet/AspNetCore/pull/16808
