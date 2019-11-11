@@ -1,6 +1,8 @@
+using BlazorApp.Server.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
@@ -19,6 +21,9 @@ namespace BlazorApp.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            services.AddDbContext<BlazorContext>(
+                options => options.UseSqlite("Data Source=BlazorDatabase.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
