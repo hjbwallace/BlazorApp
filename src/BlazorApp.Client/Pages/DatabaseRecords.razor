@@ -1,0 +1,84 @@
+﻿@page "/databaserecords"
+@using BlazorApp.Models;
+@inject HttpClient Http
+
+<h1>Database Records</h1>
+
+<p>Shows current database records and allows adding new ones</p>
+
+<h2>New Record</h2>
+@if (Message != null)
+{
+    <EditForm Model="@Message" OnValidSubmit="@OnCreateAsync">
+        <div>
+            <InputText id="message" @bind-Value="@Message" class="form-control" />
+            <button type="submit">Submit</button>
+        </div>
+    </EditForm>
+}
+
+@if (records == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Created Date</th>
+                <th>Message</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in records)
+            {
+                <tr>
+                    <td>@record.Id</td>
+                    <td>@record.CreatedDate.ToShortDateString()</td>
+                    <td>@record.Message</td>
+                    <td><button @onclick="@(() => OnRemoveAsync(record))" id="removeRecord" type="button" class="btn btn-danger deleteButton btn-block">Remove</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    DatabaseRecord[] records;
+
+    [Parameter]
+    public string Message { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await PopulateRecords();
+    }
+
+    private async Task OnCreateAsync()
+    {
+        var record = new DatabaseRecord
+        {
+            Message = Message,
+            CreatedDate = DateTime.Now
+        };
+        await Http.PostJsonAsync("api/database", record);
+        Message = "";
+        await PopulateRecords();
+    }
+
+    private async Task OnRemoveAsync(DatabaseRecord record)
+    {
+        await Http.PostJsonAsync("api/database/remove", record);
+        await PopulateRecords();
+    }
+
+    private async Task PopulateRecords()
+    {
+        records = null;
+        records = await Http.GetJsonAsync<DatabaseRecord[]>("api/database");
+        Console.WriteLine(records.Count());
+    }
+}
