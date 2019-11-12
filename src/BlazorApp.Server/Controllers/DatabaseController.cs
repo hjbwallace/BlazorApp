@@ -40,6 +40,14 @@ namespace BlazorApp.Server.Controllers
             return Ok(record);
         }
 
+        [HttpPost("remove")]
+        public async Task<IActionResult> RemoveDatabaseRecordAsync(DatabaseRecord record)
+        {
+            _context.DatabaseRecords.Remove(record);
+            await _context.SaveChangesAsync();
+            return Ok(record);
+        }
+
         [HttpPost("flash")]
         public async Task<IActionResult> PostFlashDatabaseAsync()
         {
