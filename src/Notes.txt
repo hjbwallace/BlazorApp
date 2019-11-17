@@ -1,2 +1,21 @@
 Blazor doesn't support Standard 2.1 as of Nov 9. 
 https://github.com/aspnet/AspNetCore/pull/16808
+
+# Deployment
+
+## Visual Studio
+* Right click the server project and choose Publish
+* If it asks you to sign in and doesn't return any values, make sure you have an Azure subscription
+* Enter the details and click the publish button
+
+## Powershell (Requires Azure CLI)
+* Run the "build.ps1" script to generate the zip file to publish
+* Find your Azure subscription id from the Portal (Under Subscriptions on the home screen)
+* Run the "deploy.ps1" script with the subscription id and a name for the app
+	* If you get a "The subscription of xxx' doesn't exist in cloud 'AzureCloud'" warning, run the `az login` command
+
+# Resources
+* https://chrissainty.com/securing-your-blazor-apps-authentication-with-clientside-blazor-using-webapi-aspnet-core-identity/
+* https://docs.microsoft.com/en-au/cli/azure/?view=azure-cli-latest
+
+
