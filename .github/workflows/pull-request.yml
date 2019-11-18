@@ -1,0 +1,43 @@
+name: Verify PRs
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+      
+    steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AzureAutomationUser }}
+
+    - uses: actions/checkout@v1
+      with: 
+        fetch-depth: 1
+
+    - name: Print the current branch
+      run: Write-Host github.ref
+      shell: powershell
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100
+
+    - name: Verify passing parameters to a Powershell script
+      run: >
+        powershell -command "& '.\scripts\verifySubscription.ps1'" 
+        -subscriptionId ${{ secrets.AzureSubscriptionId }}
+        -webappName ${{ secrets.WebappName }}
+
+    - name: Verify passing parameters to a Powershell script a different way
+      run: >
+        .\scripts\verifySubscription.ps1 
+        -subscriptionId ${{ secrets.AzureSubscriptionId }}
+        -webappName ${{ secrets.WebappName }}
+      shell: powershell
+
+    - name: Run the build script
+      run: .\scripts\build.ps1
+      shell: powershell

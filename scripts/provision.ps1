@@ -45,6 +45,10 @@ try {
     # Create the deployment
     Write-Host 'Creating the deployment'
     az group deployment create --name $deploymentName --resource-group $resourceGroup --template-file $armTemplate --parameters name=$webappName
+
+    # Create a user for automated deployments
+    Write-Host 'Creating automation user' 
+    az ad sp create-for-rbac --name "AutomationUser" --role contributor --scopes "/subscriptions/$($subscriptionId)/resourceGroups/$($resourceGroup)" --sdk-auth
 }
 catch {
     Write-Error $_ -ErrorAction Continue
