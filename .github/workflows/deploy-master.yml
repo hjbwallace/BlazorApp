@@ -1,0 +1,33 @@
+name: Build and Deploy Master
+
+on: 
+  push:
+    branches:	
+      - master
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+      
+    steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AzureAutomationUser }}
+
+    - uses: actions/checkout@v1
+      with: 
+        fetch-depth: 1
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100
+
+    - name: Run the build script
+      run: .\scripts\build.ps1
+      shell: powershell
+
+    - name: Run the deploy script
+      run: .\scripts\deploy.ps1 --subscriptionId ${{ secrets.AzureSubscriptionId }} --webappName ${{ secrets.WebappName }}
+      shell: powershell
