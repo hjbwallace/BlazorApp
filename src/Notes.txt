@@ -14,6 +14,14 @@ https://github.com/aspnet/AspNetCore/pull/16808
 * Run the "deploy.ps1" script with the subscription id and a name for the app
 	* If you get a "The subscription of xxx' doesn't exist in cloud 'AzureCloud'" warning, run the `az login` command
 
+# Automation
+https://github.com/Azure/login
+* Add secret to Github Repo > Settings > Secrets
+
+# Actions
+* Conditional jobs: https://github.community/t5/GitHub-Actions/Github-Actions-CI-CD-Need-optional-jobs/td-p/29696
+* https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
+
 # Resources
 * https://chrissainty.com/securing-your-blazor-apps-authentication-with-clientside-blazor-using-webapi-aspnet-core-identity/
 * https://docs.microsoft.com/en-au/cli/azure/?view=azure-cli-latest
