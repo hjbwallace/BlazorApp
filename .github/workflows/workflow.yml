@@ -1,0 +1,54 @@
+name: BlazorAppWorkflow
+on: push
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with: 
+        fetch-depth: 1
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100
+
+    - name: Run the build script
+      run: .\scripts\build.ps1
+      shell: powershell
+
+    - name: Run the tests script
+      run: .\scripts\test.ps1
+      shell: powershell
+
+    - name: Save the publish artifacts when deploying
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifacts
+        path: artifacts
+
+  deploy:
+    name: Deploy to Azure App Service
+    if: github.ref == 'master'
+    needs: build
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with: 
+        fetch-depth: 1
+
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AzureAutomationUser }}
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: artifacts
+
+    - name: Run the deploy script
+      run: .\scripts\deploy.ps1 -subscriptionId ${{ secrets.AzureSubscriptionId }} -webappName ${{ secrets.WebappName }}
+      shell: powershell

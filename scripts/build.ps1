@@ -13,6 +13,7 @@ dotnet restore "$($srcPath)\BlazorApp.sln"
 
 dotnet build "$($srcPath)\BlazorApp\BlazorApp.csproj"
 dotnet build "$($srcPath)\BlazorApp.Client\BlazorApp.Client.csproj"
+dotnet build "$($srcPath)\BlazorApp.Tests\BlazorApp.Tests.csproj"
 
 # Publish the Server project and save the artifacts path
 dotnet publish "$($srcPath)\BlazorApp.Server\BlazorApp.Server.csproj" -c Release --no-restore /p:Version=$build_version
