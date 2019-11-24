@@ -22,6 +22,18 @@ https://github.com/Azure/login
 * Conditional jobs: https://github.community/t5/GitHub-Actions/Github-Actions-CI-CD-Need-optional-jobs/td-p/29696
 * https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions
 
+## Deployment Errors
+Github actions prepends $ErrorActionPreference = 'stop' to scripts which causes the scripts to stop on any warnings or errors
+The az webapp deploy step always seems to throw a warning which then causes the step to fail. Following github issue was raised with a very similar issue.
+https://github.com/Azure/azure-cli/issues/6818
+
+az : WARNING: Getting scm site credentials for zip deployment
+At D:\a\BlazorAppSpike\BlazorAppSpike\scripts\deploy.ps1:27 char:1
++ az webapp deployment source config-zip --resource-group $resourceGrou ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: Gettin... zip deployment:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
 # Resources
 * https://chrissainty.com/securing-your-blazor-apps-authentication-with-clientside-blazor-using-webapi-aspnet-core-identity/
 * https://docs.microsoft.com/en-au/cli/azure/?view=azure-cli-latest
