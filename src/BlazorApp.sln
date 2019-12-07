@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\Blaz
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6A9950F-08F7-48E6-BE83-4DA2B046D8A5}"
 	ProjectSection(SolutionItems) = preProject
-		Notes.txt = Notes.txt
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Tests", "BlazorApp.Tests\BlazorApp.Tests.csproj", "{462CE306-153D-45FC-990C-5A348B9432A7}"

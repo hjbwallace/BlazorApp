@@ -39,6 +39,8 @@ namespace BlazorApp.Server
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BlazorContext>();
 
+            ConfigureIdentity(services);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -79,6 +81,26 @@ namespace BlazorApp.Server
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
+            });
+        }
+
+        // Allows us to customise password validation logic
+        private void ConfigureIdentity(IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequiredUniqueChars = 1;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
             });
         }
     }
