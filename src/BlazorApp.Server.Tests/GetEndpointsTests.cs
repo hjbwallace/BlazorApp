@@ -55,6 +55,7 @@ namespace BlazorApp.Server.Tests
 
         [Theory]
         [InlineData("/api/database")]
+        [InlineData("/api/admin")]
         public async Task GetApiEndpointsReturnUnauthorized(string url)
         {
 

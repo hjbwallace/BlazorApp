@@ -16,6 +16,8 @@ async Task Main()
 	using (var authenticatedClient = await GetClientAsync(username: "admin", password: "SOME_PASSWORD"))
 	using (var tokenClient = await GetClientAsync(token: "TOKEN"))
 	{
+		(await GetAllUsers(authenticatedClient)).Dump("Users");
+		
 		(await GetAllDatabaseRecords(client)).Dump("Standard Forecasts");
 		(await GetAllDatabaseRecords(authenticatedClient)).Dump("Authenticated Forecasts");
 		(await GetAllDatabaseRecords(tokenClient)).Dump("Token Forecasts");
@@ -49,6 +51,11 @@ public async Task<HttpClient> GetClientAsync(string token)
 public async Task<string> GetAllDatabaseRecords(HttpClient client)
 {
 	return await Http.GetJsonAsync(client, $"{BaseAddress}/api/database");
+}
+
+public async Task<string> GetAllUsers(HttpClient client)
+{
+	return await Http.GetJsonAsync(client, $"{BaseAddress}/api/admin");
 }
 
 public async Task<LoginResult> LoginAsync(HttpClient client, string username, string password)

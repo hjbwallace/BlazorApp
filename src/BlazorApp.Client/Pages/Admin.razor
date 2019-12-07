@@ -1,0 +1,49 @@
+﻿@page "/admin"
+@attribute [Authorize(Policy = Policies.IsAdmin)]
+@inject HttpClient Http
+
+<h1>Users</h1>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Username</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    UserRecord[] users;
+
+    [Parameter]
+    public string Message { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await PopulateRecords();
+    }
+
+    private async Task PopulateRecords()
+    {
+        users = null;
+        users = await Http.GetJsonAsync<UserRecord[]>("api/admin");
+    }
+}
