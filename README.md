@@ -38,6 +38,9 @@ At D:\a\BlazorAppSpike\BlazorAppSpike\scripts\deploy.ps1:27 char:1
 * Uses the `UserManager` and `IdentityUser` that are built into the ASP.NET Core identity logic
 * On the client side, the token is recieved and saved against the injected HttpClient and stored in local storage on the browser
 
+# Testing
+* Integration testing in ASP.NET Core applications - https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1
+
 # Notes
 * Blazor doesn't support Standard 2.1 as of Nov 9. https://github.com/aspnet/AspNetCore/pull/16808
 
