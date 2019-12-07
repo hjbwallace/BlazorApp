@@ -1,5 +1,6 @@
 ﻿using BlazorApp.Models;
 using BlazorApp.Server.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace BlazorApp.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class DatabaseController : ControllerBase
     {
         private readonly BlazorContext _context;
@@ -49,6 +51,7 @@ namespace BlazorApp.Server.Controllers
         }
 
         [HttpPost("flash")]
+        [Authorize(Policy = Policies.IsAdmin)]
         public async Task<IActionResult> PostFlashDatabaseAsync()
         {
             await _context.Database.EnsureDeletedAsync();
