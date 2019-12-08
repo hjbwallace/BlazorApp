@@ -1,0 +1,58 @@
+﻿@page "/login"
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
+<h1>Login</h1>
+
+@if (ShowErrors)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>@Error</p>
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Please enter your credentials</h5>
+        <EditForm Model="Model" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <InputText Id="username" Class="form-control" @bind-Value="Model.Username" />
+                <ValidationMessage For="@(() => Model.Username)" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <InputText Id="password" type="password" Class="form-control" @bind-Value="Model.Password" />
+                <ValidationMessage For="@(() => Model.Password)" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private LoginModel Model = new LoginModel();
+    private bool ShowErrors;
+    private string Error = "";
+
+    private async Task HandleLogin()
+    {
+        ShowErrors = false;
+
+        var result = await AuthenticationService.LoginAsync(Model);
+
+        if (result.Successful)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Error = result.Error;
+            ShowErrors = true;
+        }
+    }
+}
