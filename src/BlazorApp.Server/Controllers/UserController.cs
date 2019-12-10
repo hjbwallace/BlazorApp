@@ -85,7 +85,7 @@ namespace BlazorApp.Server.Controllers
                 signingCredentials: creds
             );
 
-            return Ok(LoginResult.Success(new JwtSecurityTokenHandler().WriteToken(token)));
+            return Ok(LoginResult.Success(new JwtSecurityTokenHandler().WriteToken(token), expiry));
         }
     }
 }

@@ -28,14 +28,12 @@ namespace BlazorApp.Client.Security
             return await GetAuthenticationStateAsync(token);
         }
 
-        public void OnUserAuthenticated(string token) => OnAuthenticationStateChanged(token);
+        public async Task OnUserAuthenticated(string token, DateTime tokenExpiry) => await OnAuthenticationStateChanged(token, tokenExpiry);
 
-        public void OnUserAuthenticationRevoked() => OnAuthenticationStateChanged(null);
+        public async Task OnUserAuthenticationRevoked() => await OnAuthenticationStateChanged(null);
 
         private async Task<AuthenticationState> GetAuthenticationStateAsync(string token)
         {
-            await _tokenRepository.SaveTokenAsync(token);
-
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
             var identity = string.IsNullOrWhiteSpace(token)
@@ -45,8 +43,9 @@ namespace BlazorApp.Client.Security
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
         }
 
-        private void OnAuthenticationStateChanged(string token)
+        private async Task OnAuthenticationStateChanged(string token, DateTime? tokenExpiry = null)
         {
+            await _tokenRepository.SaveTokenAsync(token, tokenExpiry);
             var authenticationState = GetAuthenticationStateAsync(token);
             NotifyAuthenticationStateChanged(authenticationState);
         }
