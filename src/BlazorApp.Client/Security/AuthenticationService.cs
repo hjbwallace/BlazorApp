@@ -27,15 +27,14 @@ namespace BlazorApp.Client.Security
             var result = await PostAsync<LoginResult>("api/user/login", loginModel);
 
             if (result.Successful)
-                _authenticationStateProvider.OnUserAuthenticated(result.Token);
+                await _authenticationStateProvider.OnUserAuthenticated(result.Token, result.TokenExpiry.GetValueOrDefault());
 
             return result;
         }
 
         public async Task LogoutAsync()
         {
-            _authenticationStateProvider.OnUserAuthenticationRevoked();
-            await Task.CompletedTask;
+            await _authenticationStateProvider.OnUserAuthenticationRevoked();
         }
 
         private async Task<T> PostAsync<T>(string route, object content)

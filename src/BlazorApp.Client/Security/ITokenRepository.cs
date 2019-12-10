@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace BlazorApp.Client.Security
 {
@@ -6,6 +7,6 @@ namespace BlazorApp.Client.Security
     {
         Task<string> GetTokenAsync();
 
-        Task SaveTokenAsync(string token);
+        Task SaveTokenAsync(string token, DateTime? expiry = null);
     }
 }
