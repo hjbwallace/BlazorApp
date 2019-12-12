@@ -19,4 +19,4 @@ dotnet build "$($srcPath)\BlazorApp.Tests\BlazorApp.Tests.csproj"
 # Publish the Server project and save the artifacts path
 dotnet publish "$($srcPath)\BlazorApp.Server\BlazorApp.Server.csproj" -c Release --no-restore /p:Version=$build_version
 
-Compress-Archive -Path "$($srcPath)\BlazorApp.Server\bin\Release\netcoreapp3.0\publish\*" -DestinationPath "$($artifactsPath)\BlazorApp.Server.package.zip" -CompressionLevel Optimal -Force
+Compress-Archive -Path "$($srcPath)\BlazorApp.Server\bin\Release\netcoreapp3.1\publish\*" -DestinationPath "$($artifactsPath)\BlazorApp.Server.package.zip" -CompressionLevel Optimal -Force
