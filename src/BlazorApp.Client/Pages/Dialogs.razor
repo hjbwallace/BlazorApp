@@ -1,0 +1,44 @@
+﻿@page "/dialogs"
+@inject IDialogService DialogService
+
+<h1>Dialog Examples</h1>
+<div>
+    <p>Shows an alert dialog with no result</p>
+    <button @onclick="ShowAlert">Alert</button>
+</div>
+
+<div>
+    <p>Shows a dialog which prompts the user for further information</p>
+    <button @onclick="ShowPrompt">Prompt</button>
+    <p>Prompt Result: @promptResult</p>
+</div>
+
+<div>
+    <p>Shows a dialog which prompts the user to confirm an action</p>
+    <button @onclick="ShowConfirm">Confirm</button>
+    <p>Confirm Result: @confirmResult</p>
+</div>
+
+@code {
+
+    private string promptResult;
+    private string confirmResult;
+
+    private async Task ShowAlert()
+    {
+        await DialogService.ShowAlertAsync("This is an alert");
+    }
+
+    private async Task ShowPrompt()
+    {
+        var result = await DialogService.ShowPromptAsync("This is a prompt for further information");
+        promptResult = result;
+    }
+
+    private async Task ShowConfirm()
+    {
+        var result = await DialogService.ShowConfirmAsync("This is a confirmation request");
+        confirmResult = result ? "TRUE" : "FALSE";
+    }
+
+}
