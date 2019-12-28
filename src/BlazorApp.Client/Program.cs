@@ -26,6 +26,7 @@ namespace BlazorApp.Client
             });
 
             builder.Services.AddSingleton<IDialogService, DialogService>();
+            builder.Services.AddSingleton<IFileService, FileService>();
 
             builder.RootComponents.Add<App>("app");
 

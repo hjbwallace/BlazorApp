@@ -1,6 +1,14 @@
 ﻿@page "/admin"
 @attribute [Authorize(Policy = Policies.IsAdmin)]
 @inject HttpClient Http
+@inject IFileService FileService
+
+<h1>Admin</h1>
+
+<p>@message</p>
+
+<button @onclick="OnExportDatabaseAsync">Export Database</button>
+<p>Export the current state of the database to file</p>
 
 <h1>Users</h1>
 
@@ -31,7 +39,8 @@ else
 }
 
 @code {
-    UserRecord[] users;
+    private UserRecord[] users;
+    private string message;
 
     [Parameter]
     public string Message { get; set; } = "";
@@ -45,5 +54,15 @@ else
     {
         users = null;
         users = await Http.GetJsonAsync<UserRecord[]>("api/admin");
+    }
+
+    private async Task OnExportDatabaseAsync()
+    {
+        var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+        var fileName = $"BlazorDatabase_{timestamp}.db";
+        var databaseBytes = await Http.PostJsonAsync<byte[]>("api/database/export", null);
+
+        await FileService.SaveFileAsync(fileName, databaseBytes);
+        message = "Database has been exported at " + DateTime.Now.ToShortDateString();
     }
 }
