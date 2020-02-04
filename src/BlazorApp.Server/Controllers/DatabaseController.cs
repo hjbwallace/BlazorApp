@@ -58,5 +58,13 @@ namespace BlazorApp.Server.Controllers
             await _context.Database.EnsureCreatedAsync();
             return Ok();
         }
+
+        [HttpPost("export")]
+        [Authorize(Policy = Policies.IsAdmin)]
+        public async Task<IActionResult> GetDatabaseExportAsync()
+        {
+            var bytes = await System.IO.File.ReadAllBytesAsync("BlazorDatabase.db");
+            return Ok(bytes);
+        }
     }
 }
